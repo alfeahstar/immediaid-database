@@ -4,19 +4,18 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const app = express();
-app.use(express.json());  // This will allow us to handle JSON bodies
-app.use(cors());  // Enable cross-origin resource sharing (for mobile or different domains)
+app.use(express.json());
+app.use(cors());
 
 // Routes
 const userRoutes = require("./models/routes/userRoutes");
 const authRoutes = require("./models/routes/authRoutes");
+const sosRoutes = require("./models/routes/sosRoutes"); // Import SOS route
 
 // Use the routes
-app.use("/users", userRoutes);  // Handle user-related routes
-app.use("/api/auth", authRoutes);  // Handle auth-related routes
-
-// Optional: debug log to check Mongo URI (ensure it doesn't leak sensitive data in production)
-console.log("🔍 MONGO_URI from .env:", process.env.MONGO_URI);
+app.use("/users", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/sos", sosRoutes); // Register SOS API endpoint
 
 // Connect to MongoDB
 mongoose
@@ -24,16 +23,16 @@ mongoose
   .then(() => {
     console.log("✅ Connected to MongoDB");
 
-    const PORT = process.env.PORT || 5000;  // Use a custom port or default to 5000
+    const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}...`);
     });
   })
   .catch((err) => {
-    console.error("❌ MongoDB Connection Error:", err.message);  // Display error message
+    console.error("❌ MongoDB Connection Error:", err.message);
   });
 
-// Basic Route for checking server health
+// Health check route
 app.get("/", (req, res) => {
   res.send("🚀 Disaster Management API is Running!");
 });
