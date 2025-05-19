@@ -11,11 +11,13 @@ app.use(cors());
 const userRoutes = require("./models/routes/userRoutes");
 const authRoutes = require("./models/routes/authRoutes");
 const sosRoutes = require("./models/routes/sosRoutes"); // Import SOS route
+const newsRoutes = require("./models/routes/news");
 
 // Use the routes
 app.use("/users", userRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/sos", sosRoutes); // Register SOS API endpoint
+app.use("/api/sos", sosRoutes);
+app.use("/api/news", newsRoutes); // Register SOS API endpoint
 
 // Connect to MongoDB
 mongoose
